@@ -33,6 +33,7 @@ nbbuild/
 dist/
 nbdist/
 nbactions.xml
+yarn.lock
 nb-configuration.xml
 .nb-gradle/
 /.publish
