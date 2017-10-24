@@ -4,17 +4,24 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/main.js',
 
   output: {
-    filename: 'bundle.js',
+    filename: 'vue_cart.js',
     path: path.resolve(__dirname, 'dist')
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new ExtractTextPlugin('style.css'),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
     new BrowserSyncPlugin(
       // BrowserSync options
       {
@@ -38,6 +45,13 @@ module.exports = {
   devServer: {
     contentBase: './dist'
   },
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('src'),
+    }
+  },
   module: {
     rules: [
       {
@@ -60,10 +74,16 @@ module.exports = {
       },
 
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       }
+
     ]
   }
 }
